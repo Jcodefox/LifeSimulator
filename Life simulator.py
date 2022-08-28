@@ -1,5 +1,6 @@
 print('Type ? for help')
 print('Life simulator.\nversion 1.7\nNow celebrating 1162 lines of code!')
+import os
 from time import gmtime, strftime
 from collections import deque
 import time
