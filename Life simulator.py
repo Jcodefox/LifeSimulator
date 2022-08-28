@@ -983,20 +983,20 @@ while b !='quit':
                             jobeventdq=random.choice('de')
                             jobprblm=input('Someone orderd a blizzard\ndo you:\na:Tell them we do not have that and offer something else?\nb:Send them to DQ?')
                             if jobprblm=='a':
-                                if jobeventdq==d:
+                                if jobeventdq=='d':
                                     print('He left upset.\nYou lose $10')
                                     dqlose=money-10
                                     money=dqlose
-                                if jobeventdq==e:
+                                if jobeventdq=='e':
                                     print('He orderd a bigquack.\nYou gain $10')
                                     dqwin=money+10
                                     money=dqwin
                             else:
-                                if jobeventdq==e:
+                                if jobeventdq=='e':
                                     print('Your boss is mad.\nYou lose $10')
                                     dqlose1=money-10
                                     money=dqlose1
-                                if jobeventdq==d:
+                                if jobeventdq=='d':
                                     print('He left happy.\nYou gain $10')
                                     dqwin1=money+10
                                     money=dqwin1
