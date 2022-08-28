@@ -7,3 +7,5 @@ The git repo was created locally in 2018 along with some changes to make it work
 Other than that nothing was changed since 2016 until now.
 
 If you would like to contribute, go right ahead and clone the project, make a change, and make a pull request.
+
+Comment section here: #1
