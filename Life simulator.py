@@ -1,5 +1,5 @@
 print('Type ? for help')
-print('Life simulator.\nversion 1.7\nNow celebrating 1162 lines of code!')
+print('Life simulator.\nversion 1.7.1\nNow celebrating 1179 lines of code!')
 import os
 from time import gmtime, strftime
 from collections import deque
@@ -676,8 +676,14 @@ while b !='quit':
         print('1.3:The work update')
         time.sleep(1)
         print('1.4:The house update')
-        time.sleep(3)
+        time.sleep(1)
         print('1.5:The happiness update')
+	time.sleep(1)
+	print('1.6:Undocumented update')
+	time.sleep(1)
+	print('1.7:The 1163 lines of code update')
+	time.sleep(1)
+	print('1.7.1:Universal update')
     if b=='$':
         print("You have $",money)
         time.sleep(1)
