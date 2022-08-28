@@ -8,4 +8,4 @@ Other than that nothing was changed since 2016 until now.
 
 If you would like to contribute, go right ahead and clone the project, make a change, and make a pull request.
 
-Comment section here: #1
+Comment section here: [#1](https://github.com/JCodeFox/LifeSimulator/issues/1)
