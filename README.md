@@ -7,5 +7,6 @@ The git repo was created locally in 2018 along with some changes to make it work
 Other than that nothing was changed since 2016 until now.
 
 If you would like to contribute, go right ahead and clone the project, make a change, and make a pull request.
+Please refrain from NSFW or swearing anywhere in this repository.
 
 Comment section here: [#1](https://github.com/JCodeFox/LifeSimulator/issues/1)
