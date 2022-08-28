@@ -3,10 +3,12 @@ print('Life simulator.\nversion 1.7\nNow celebrating 1162 lines of code!')
 from time import gmtime, strftime
 from collections import deque
 import time
-import winsound
+if os.name == 'nt':
+	import winsound
 import os
 import random
-winsound.SND_ALIAS 
+if os.name == 'nt':
+	winsound.SND_ALIAS 
 basket = []
 dq=0
 weather='clear'
@@ -605,16 +607,19 @@ while b !='quit':
                             pantry.append('cooked carrots')
                             pantry.remove('carrots')
                             print('Food')
-                            winsound.Beep(1700, 1000)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
                             time.sleep(0.5)
                             print('is')
-                            winsound.Beep(1700, 1000)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
                             time.sleep(0.5)
                             print('ready!')
-                            winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            winsound.Beep(1700, 1500)
-                            time.sleep(1)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
+                            	time.sleep(0.5)
+                            	winsound.Beep(1700, 1500)
+                            	time.sleep(1)
                     if usemicro=='burger':
                         if 'burger' in pantry:
                             microtime=int(240)
@@ -626,16 +631,19 @@ while b !='quit':
                             pantry.append('ok burger')
                             pantry.remove('burger')
                             print('Food')
-                            winsound.Beep(1700, 1000)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
                             time.sleep(0.5)
                             print('is')
-                            winsound.Beep(1700, 1000)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
                             time.sleep(0.5)
                             print('ready!')
-                            winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            winsound.Beep(1700, 1500)
-                            time.sleep(1)
+                            if os.name == 'nt':
+                            	winsound.Beep(1700, 1000)
+                            	time.sleep(0.5)
+                            	winsound.Beep(1700, 1500)
+                            	time.sleep(1)
                     if usemicro=='apple':
                         if 'apple' in pantry:
                             microtime=int(30)
@@ -1159,5 +1167,6 @@ while b !='quit':
                                     print('He left happy.\nYou gain $20')
                                     dqwin1=money+20
                                     money=dqwin1
-# Play Windows exit sound.
-winsound.PlaySound("SystemExit", winsound.SND_ALIAS)
+if os.name == 'nt':
+	# Play Windows exit sound.
+	winsound.PlaySound("SystemExit", winsound.SND_ALIAS)
