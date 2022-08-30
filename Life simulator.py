@@ -682,7 +682,7 @@ while b !=  'quit':
                         elif happiness <= 100:
                             money += 7.50
                         hunger -= random.randrange(6)
-                        print('you have $', mchap)
+                        print('you have $', money)
                         print(happiness, '% happy')
                         time.sleep(0.5)
                         if working == '?':
@@ -769,7 +769,7 @@ while b !=  'quit':
                         elif happiness <= 100:
                             money += 10.00
                         hunger -= random.randrange(6)
-                        print('you have $', mchap)
+                        print('you have $', money)
                         print(happiness, '% happy')
                         time.sleep(0.5)
                         if working == '?':
