@@ -79,7 +79,7 @@ def change_happiness(amount, print_msg=False):
 def change_weather():
     global weather
     if weather !=  'rain':
-        if random.randint(1, 48) == 1:
+        if random.randint(1, 10) == 1:
             print('RAIN!')
             weather = 'rain'
     else:
