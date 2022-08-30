@@ -2,14 +2,37 @@ print('Type ? for help')
 print('Life simulator.\nversion 1.7.1\nNow celebrating 1179 lines of code!')
 import os
 from time import gmtime, strftime
-from collections import deque
 import time
 if os.name == 'nt':
     import winsound
-import os
+    winsound.SND_ALIAS
+    
+def beep(freq, dur):
+    if os.name == 'nt':
+        winsound.Beep(freq, dur)
+        
+def microwave(microtime, item, new_item):
+    if item in pantry:
+        while microtime > 0:
+            print('microwave ', microtime, jsec)
+            time.sleep(1)
+            microtime -= 1
+        pantry.append(new_item)
+        pantry.remove(item)
+        print('Food')
+        beep(1700, 1000)
+        time.sleep(0.5)
+        print('is')
+        beep(1700, 1000)
+        time.sleep(0.5)
+        print('ready!')
+        beep(1700, 1000)
+        time.sleep(0.5)
+        beep(1700, 1500)
+        time.sleep(1)
+                                
 import random
-if os.name == 'nt':
-    winsound.SND_ALIAS 
+
 basket = []
 dq = 0
 weather = 'clear'
@@ -45,6 +68,29 @@ microwave = 2
 apply = []
 xp = 0
 jsec = 'seconds'
+
+def change_happiness(amount, print_msg=False):
+    global happiness
+    happiness += amount
+    happiness = max(0, min(happiness, 100))
+    if print_msg:
+        print(happiness,'% happy')
+    
+def change_weather():
+    global weather
+    if weather !=  'rain':
+        if random.randint(1, 48) == 1:
+            print('RAIN!')
+            weather = 'rain'
+    else:
+        if random.randint(1, 100) <= 40:
+            weather = 'dry'
+            print("It is no longer raining")
+    if weather == 'rain':
+        change_happiness(random.randint(-10, 5))
+    else:
+        change_happiness(random.randint(-1, 10))
+    
 while b !=  'quit':
     homeshop = 0
     park = 0
@@ -55,19 +101,7 @@ while b !=  'quit':
     print(clkhr, ':00', apm)
     print('weather:', weather)
     b = input('...') #at home
-    if weather !=  'rain':
-        wet = random.randrange(10)
-        if wet > 8:
-            print('RAIN!')
-            weather = 'rain'
-    else:
-        dry = random.randrange(10)
-        if dry > 4:
-            weather = 'dry'
-    if weather == 'rain':
-        happiness -= random.randrange(-5, 10)
-    else:
-        happiness -= random.randrange(-10, 1)
+    change_weather()
     apples += random.randrange(7)
     carrot += random.randrange(5)
     microwave += random.randrange(2)
@@ -78,24 +112,19 @@ while b !=  'quit':
     priceaple = int(random.uniform(0.75, 1.29) * 100) / 100.0
     hunger -= random.randrange(3)
     pricefr = priceaple + pricecrrts
-    rbevent = random.randrange(1,20)
-    pnyevent = random.randrange(1,10)
-    brevent = random.randrange(1,15)
     market = 'open'
     microtime = 0
     working = 0
     walking = 0
     pricemicro1 = 0
-    if rbevent == 1:
+    if random.randint(1, 20) == 1:
         print('RAINBOW')
-        happiness = 100
-        print(happiness,'% HAPPY')
+        change_happiness(100, True)
         time.sleep(1)
-    if pnyevent == 1:
-        print('OH,look a penny!')
+    if random.randint(1, 10) == 1:
+        print('OH, look a penny!')
         money += 0.01
-        happiness = min(happiness + 10, 100)
-        print(happiness, '% HAPPY')
+        change_happiness(5, True)
         time.sleep(1)
     if shoe == 1:
         money += 0.50
@@ -110,17 +139,16 @@ while b !=  'quit':
             apm = 'pm'
     if clkhr == 12:
         clkhr = 0
-    if brevent <= 1:
-        if home == 'tent':
-            print('BEAR!')
-            happiness -= 40
-            time.sleep(2)
-            print('.........')
-            time.sleep(2.5)
-            if random.randrange(15) == 15:
-                print('You were eaten by a bear!')
-                b = 'quit'
-                time.sleep(5)
+    if random.randint(1, 15) == 1 and home == 'tent':
+        print('BEAR!')
+        change_happiness(-40)
+        time.sleep(2)
+        print('.........')
+        time.sleep(2.5)
+        if random.randint(1, 15) == 15:
+            print('You were eaten by a bear!')
+            b = 'quit'
+            time.sleep(5)
     if hunger < 0:
         print('You starved to death.')
         b = 'quit'
@@ -161,17 +189,7 @@ while b !=  'quit':
                 if clkhr >= 9:
                     market = 'closed'
             hunger -= random.randrange(3)
-            if weather != 'rain':
-                if random.randrange(10) > 8:
-                    print('RAIN!')
-                    weather = 'rain'
-            else:
-                if random.randrange(10) > 4:
-                    weather = 'dry'
-            if weather == 'rain':
-                happiness -= random.randrange(-10, 10)
-            else:
-                happiness -= random.randrange(-5, 1) 
+            change_weather()
             clkhr += 1
             if clkhr == 11:
                 if apm == 'pm':
@@ -182,7 +200,6 @@ while b !=  'quit':
                     apm = 'pm'
             if clkhr == 12:
                 clkhr = 0
-            happiness = min(happiness, 100)
             print('Current location:', 'sidewalk somewhere')
             print('Current time:', clkhr, ':00', apm)
             walking = input('--->')
@@ -213,20 +230,9 @@ while b !=  'quit':
                     hunger -= random.randrange(3)
                     print('Current location:', 'park')
                     print('Current time:', clkhr, ':00', apm)
-                    if weather != 'rain':
-                        if random.randrange(10) > 8:
-                            print('RAIN!')
-                            weather = 'rain'
-                    else:
-                        if random.randrange(10) > 4:
-                            weather = 'dry'
-                    if weather == 'rain':
-                        happiness -= random.randrange(-15, 10)
-                    else:
-                        happiness -= random.randrange(-10, 1)
+                    change_weather()
                     clkhr += 1
                     print('weather', weather)
-                    happiness = min(happiness, 100)
                     if clkhr == 11:
                         if apm == 'pm':
                             clkday += 1
@@ -257,9 +263,7 @@ while b !=  'quit':
                 if money >= 0.01:
                     if market == 'open':
                         while payed != 'leave':
-                            happiness -= random.randrange(-10, 3)
-                            happiness = min(happiness, 100)
-                            print(happiness, '% happy')
+                            change_happiness(random.randint(-3, 10), True)
                             isle = input('Which isle:')
                             if isle == '?':
                                 print('Isle 1 food..')
@@ -388,7 +392,7 @@ while b !=  'quit':
                                     print('$', totalprice)
                                     money -= totalprice
                                     print('Have a nice day.\nYou have $', money)
-                                    del basket[:]
+                                    basket.clear()
                                     payed = 'leave'
                                 else :
                                     reciept = 0
@@ -486,71 +490,11 @@ while b !=  'quit':
                     print(pantry)
                     usemicro = input('cook:')
                     if usemicro == 'carrots':
-                        if 'carrots' in pantry:
-                            microtime = int(30)
-                            while microtime != 0:
-                                print('microwave ', microtime, jsec)
-                                time.sleep(1)
-                                microtime -= 1
-                            pantry.append('cooked carrots')
-                            pantry.remove('carrots')
-                            print('Food')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('is')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('ready!')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                                time.sleep(0.5)
-                                winsound.Beep(1700, 1500)
-                                time.sleep(1)
-                    if usemicro == 'burger':
-                        if 'burger' in pantry:
-                            microtime = 240
-                            while microtime != 0:
-                                print('microwave ', microtime, jsec)
-                                time.sleep(1)
-                                microtime -= 1
-                            pantry.append('ok burger')
-                            pantry.remove('burger')
-                            print('Food')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('is')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('ready!')
-                            if os.name == 'nt':
-                                winsound.Beep(1700, 1000)
-                                time.sleep(0.5)
-                                winsound.Beep(1700, 1500)
-                                time.sleep(1)
-                    if usemicro == 'apple':
-                        if 'apple' in pantry:
-                            microtime = 30
-                            while microtime != 0:
-                                print('microwave ', microtime, jsec)
-                                time.sleep(1)
-                                microtime -= 1
-                            pantry.append('bad apple')
-                            pantry.remove('apple')
-                            print('Food')
-                            winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('is')
-                            winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            print('ready!')
-                            winsound.Beep(1700, 1000)
-                            time.sleep(0.5)
-                            winsound.Beep(1700, 1500)
-                            time.sleep(1)
+                        microwave(30, "carrots", "cooked carrots")
+                    elif usemicro == 'burger':
+                        microwave(30, "burger", "ok burger")
+                    elif usemicro == 'apple':
+                        microwave(30, "apple", "bad apple")
     if b == 'versions':
         print('1.0:The original')
         time.sleep(1)
@@ -768,20 +712,19 @@ while b !=  'quit':
                         if clkhr == 12:
                             clkhr = 0
                         if jobevent == 1:
-                            jobeventdq = random.choice('de')
                             jobprblm = input('Someone orderd a blizzard\ndo you:\na:Tell them we do not have that and offer something else?\nb:Send them to DQ?')
                             if jobprblm == 'a':
-                                if jobeventdq == 'd':
+                                if random.randint(1, 2) == 1:
                                     print('He left upset.\nYou lose $10')
                                     money -= 10
-                                if jobeventdq == 'e':
+                                else:
                                     print('He orderd a bigquack.\nYou gain $10')
                                     money += 10
                             else:
-                                if jobeventdq == 'e':
+                                if random.randint(1, 2) == 1:
                                     print('Your boss is mad.\nYou lose $10')
                                     money -= 10
-                                if jobeventdq == 'd':
+                                else:
                                     print('He left happy.\nYou gain $10')
                                     money += 10
                 elif dq == 1:
@@ -856,20 +799,19 @@ while b !=  'quit':
                         if clkhr == 12:
                             clkhr = 0
                         if jobevent == 1:
-                            jobeventdq = random.choice('ac')
                             jobprblm = input('Someone orderd a big quack\ndo you:\na:Tell them we do not have that and offer something else?\nb:Send them to Mcducks?')
                             if jobprblm == 'a':
-                                if jobeventdq == 'a':
+                                if random.randint(1, 2) == 1:
                                     print('He left upset.\nYou lose $20')
                                     money -= 20
-                                if jobeventdq == 'c':
+                                else:
                                     print('He orderd a blizzzard.\nYou gain $20')
                                     money += 20
                             else:
-                                if jobeventdq == 'c':
+                                if random.randint(1, 2) == 1:
                                     print('Your boss is mad.\nYou lose $20')
                                     money -= 20
-                                if jobeventdq == 'a':
+                                else:
                                     print('He left happy.\nYou gain $20')
                                     money += 20
 if os.name == 'nt':
