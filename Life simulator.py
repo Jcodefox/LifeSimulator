@@ -75,7 +75,35 @@ def change_happiness(amount, print_msg=False):
     happiness = max(0, min(happiness, 100))
     if print_msg:
         print(happiness,'% happy')
+        
+def die():
+    global b
+    b = "quit"
+    time.sleep(5)
     
+def tick_time():
+    global clkhr, apm, clkday
+    clkhr += 1
+    if clkhr == 12:
+        if apm == 'pm':
+            clkday += 1
+            apm = 'am'
+            print(f'day: {clkday}')
+        elif apm == 'am':
+            apm = 'pm'
+    if clkhr > 12:
+        clkhr = 1
+        
+def change_hunger(amount):
+    global hunger
+    hunger += amount
+    hunger = max(0, min(hunger, 100))
+    if hunger < 0:
+        print("You starved to death.")
+        die()
+    elif hunger <= 10:
+        print("You are starving!")
+        
 def change_weather():
     global weather
     if weather !=  'rain':
@@ -95,11 +123,11 @@ while b !=  'quit':
     homeshop = 0
     park = 0
     work = 0
-    clkhr += 1
-    print('You live in a', home)
-    print('Current location:', 'In your', home)
-    print(clkhr, ':00', apm)
-    print('weather:', weather)
+    tick_time()
+    print(f'You live in a {home}')
+    print(f'Current location: In your {home}')
+    print(f'{clkhr}:00 {apm}')
+    print(f'weather: {weather}')
     b = input('...') #at home
     change_weather()
     apples += random.randrange(7)
@@ -110,7 +138,7 @@ while b !=  'quit':
     pricebur = int(random.uniform(3.69, 4.99) * 100) / 100.0
     pricecrrts = int(random.uniform(0.99, 1.59) * 100) / 100.0
     priceaple = int(random.uniform(0.75, 1.29) * 100) / 100.0
-    hunger -= random.randrange(3)
+    change_hunger(-random.randrange(3))
     pricefr = priceaple + pricecrrts
     market = 'open'
     microtime = 0
@@ -130,15 +158,6 @@ while b !=  'quit':
         money += 0.50
     if (apm == 'am' and clkhr <= 7) or (apm == 'pm' and clkhr >= 9):
         market = 'closed'
-    if clkhr == 11:
-        if apm == 'pm':
-            clkday += 1
-            apm = 'am'
-            print('day:', clkday)
-        elif apm == 'am':
-            apm = 'pm'
-    if clkhr == 12:
-        clkhr = 0
     if random.randint(1, 15) == 1 and home == 'tent':
         print('BEAR!')
         change_happiness(-40)
@@ -147,38 +166,34 @@ while b !=  'quit':
         time.sleep(2.5)
         if random.randint(1, 15) == 15:
             print('You were eaten by a bear!')
-            b = 'quit'
-            time.sleep(5)
-    if hunger < 0:
-        print('You starved to death.')
-        b = 'quit'
-        time.sleep(5)
+            die()
     if money <= 10:
         print('Low money.You have $', money)
     if b == 'sell':
         print(pantry)
         print(apply)
         sell = input('sell what?:')
-        if sell == 'apple' and 'apple' in pantry:
-            pantry.remove('apple')
-            money += 0.75
-        if sell == 'bad apple' and 'bad apple' in pantry:
-            print("can't sell")
-        if sell == 'carrots' and 'carrots' in pantry:
-            pantry.remove('carrots')
-            money += 0.99
-        if sell == 'cooked carrots' and 'cooked carrots' in pantry:
-            pantry.remove('cookedcarrots')
-            money += 2.40
-        if sell == 'burger' and 'burger' in pantry:
-            pantry.remove('burger')
-            money += 3.69
-        if sell == 'ok burger' and 'ok burger' in pantry:
-            pantry.remove('ok burger')
-            money += 6.99
-        if sell == 'microwave' and 'microwave' in apply:
-            apply.remove('microwave')
-            money += 2.40
+        if sell in pantry:
+            if sell == 'apple':
+                pantry.remove('apple')
+                money += 0.75
+            elif sell == 'bad apple':
+                print("can't sell")
+            elif sell == 'carrots':
+                pantry.remove('carrots')
+                money += 0.99
+            elif sell == 'cooked carrots':
+                pantry.remove('cooked carrots')
+                money += 2.40
+            elif sell == 'burger':
+                pantry.remove('burger')
+                money += 3.69
+            elif sell == 'ok burger':
+                pantry.remove('ok burger')
+                money += 6.99
+            elif sell == 'microwave':
+                apply.remove('microwave')
+                money += 2.40
     if b == 'walk': #<----- b is primary input.
         while walking != 'go home':
             market = 'open'
@@ -188,20 +203,11 @@ while b !=  'quit':
             if apm == 'pm':
                 if clkhr >= 9:
                     market = 'closed'
-            hunger -= random.randrange(3)
+            change_hunger(-random.randrange(3))
             change_weather()
-            clkhr += 1
-            if clkhr == 11:
-                if apm == 'pm':
-                    clkday += 1
-                    apm = 'am'
-                    print('day:', clkday)
-                elif apm == 'am':
-                    apm = 'pm'
-            if clkhr == 12:
-                clkhr = 0
-            print('Current location:', 'sidewalk somewhere')
-            print('Current time:', clkhr, ':00', apm)
+            tick_time()
+            print('Current location: sidewalk somewhere')
+            print(f'Current time: {clkhr}:00 {apm}')
             walking = input('--->')
             if walking == '?':          #<-----HELP FOR WALK HERE!
                 print('Type store to go to store')
@@ -227,21 +233,12 @@ while b !=  'quit':
                     if apm == 'pm':
                         if clkhr >= 9:
                             market = 'closed'
-                    hunger -= random.randrange(3)
+                    change_hunger(-random.randrange(3))
                     print('Current location:', 'park')
                     print('Current time:', clkhr, ':00', apm)
                     change_weather()
-                    clkhr += 1
                     print('weather', weather)
-                    if clkhr == 11:
-                        if apm == 'pm':
-                            clkday += 1
-                            apm = 'am'
-                            print('day:', clkday)
-                        elif apm == 'am':
-                            apm = 'pm'
-                    if clkhr == 12:
-                        clkhr = 0
+                    tick_time()
                     park = input('---')
                     if park == '?':
                         print('Type walk to go back to walking')
@@ -423,34 +420,34 @@ while b !=  'quit':
         mmm  = input('What to eat?\n')
         if mmm == 'apple':
             if 'apple' in pantry:
-                hunger += 5
+                change_hunger(5)
                 pantry.remove('apple')
                 print('Your hunger is at', hunger)
         if mmm == 'bad apple':
             if 'bad apple' in pantry:
-                hunger -= 5
+                change_hunger(-5)
                 pantry.remove('bad apple')
                 print('you lose 5 hunger')
                 print('Your hunger is at', hunger)
         if mmm == 'carrots':
             if 'carrots' in pantry:
-                hunger += 5
+                change_hunger(5)
                 pantry.remove('carrots')
                 print('Your hunger is at', hunger)
         if mmm == 'cooked carrots':
             if 'cooked carrots' in pantry:
-                hunger += 10
+                change_hunger(10)
                 pantry.remove('cooked carrots')
                 print('Your hunger is at', hunger)
         if mmm == 'burger':
             if 'burger' in pantry:
-                hunger -= 2
+                change_hunger(-2)
                 pantry.remove('burger')
                 print('EW!\nLOSE 2 HUNGER!')
                 print('Your hunger is at', hunger)
         if mmm == 'ok burger':
             if 'ok burger' in pantry:
-                hunger += 20
+                change_hunger(20)
                 pantry.remove('ok burger')
                 print('Your hunger is at', hunger)
     if b == '?':
@@ -644,7 +641,7 @@ while b !=  'quit':
                     while working != 'stop':
                         print('Current location:', 'mcducks')
                         working = input('...')
-                        jobevent = random.randrange(1,10)
+                        jobevent = random.randint(1,10)
                         clkhr += 1
                         if clkhr == 11:
                             if apm == 'pm':
@@ -659,8 +656,7 @@ while b !=  'quit':
                                 apm = 'pm'
                         if clkhr == 12:
                             clkhr = 0
-                        happiness -= random.randrange(-10,3)
-                        happiness = min(happiness, 100)
+                        change_happiness(random.randint(-3, 10), True)
                         if happiness <= 10:
                             money += int(random.uniform(0.01, 0.50) * 100) / 100.0
                         elif happiness <= 20:
@@ -683,7 +679,6 @@ while b !=  'quit':
                             money += 7.50
                         hunger -= random.randrange(6)
                         print('you have $', money)
-                        print(happiness, '% happy')
                         time.sleep(0.5)
                         if working == '?':
                             print('Type eat to eat')
@@ -702,15 +697,7 @@ while b !=  'quit':
                             if mcyds == 'chicknuggets':
                                 money -= 1.40
                                 hunger += 6
-                        if clkhr == 11:
-                            if apm == 'pm':
-                                clkday += 1
-                                apm = 'am'
-                                print('day:', clkday)
-                            elif apm == 'am':
-                                apm = 'pm'
-                        if clkhr == 12:
-                            clkhr = 0
+                        tick_time()
                         if jobevent == 1:
                             jobprblm = input('Someone orderd a blizzard\ndo you:\na:Tell them we do not have that and offer something else?\nb:Send them to DQ?')
                             if jobprblm == 'a':
@@ -733,7 +720,7 @@ while b !=  'quit':
                         working = input('~~~')
                         jobevent = random.randrange(1,10)
                         clkhr += 1
-                        if clkhr == 11:
+                        if clkhr == 12:
                             if apm == 'pm':
                                 clkday += 1
                                 xxp += 1
@@ -744,10 +731,9 @@ while b !=  'quit':
                                     xxp = 0
                             elif apm == 'am':
                                 apm = 'pm'
-                        if clkhr == 12:
-                            clkhr = 0
-                        happiness -= random.randrange(-10,3)
-                        happiness = min(happiness, 100)
+                        if clkhr > 12:
+                            clkhr = 1
+                        change_happiness(random.randint(-3, 10), True)
                         if happiness <= 10:
                             money += int(random.uniform(0.01, 1.00) * 100) / 100.0
                         elif happiness <= 20:
@@ -770,7 +756,6 @@ while b !=  'quit':
                             money += 10.00
                         hunger -= random.randrange(6)
                         print('you have $', money)
-                        print(happiness, '% happy')
                         time.sleep(0.5)
                         if working == '?':
                             print('Type eat to eat')
@@ -782,22 +767,14 @@ while b !=  'quit':
                             mcyds = input('Eat what?')
                             if mcyds == 'blizzard':
                                 money -= 2.50
-                                hunger += 8
+                                change_hunger(8)
                             if mcyds == 'dq burger':
                                 money -= 2.20
-                                hunger += 12
+                                change_hunger(12)
                             if mcyds == 'chicktenders':
                                 money -= 1.40
-                                hunger += 7
-                        if clkhr == 11:
-                            if apm == 'pm':
-                                clkday += 1
-                                apm = 'am'
-                                print('day:', clkday)
-                            elif apm == 'am':
-                                apm = 'pm'
-                        if clkhr == 12:
-                            clkhr = 0
+                                change_hunger(7)
+                        tick_time()
                         if jobevent == 1:
                             jobprblm = input('Someone orderd a big quack\ndo you:\na:Tell them we do not have that and offer something else?\nb:Send them to Mcducks?')
                             if jobprblm == 'a':
